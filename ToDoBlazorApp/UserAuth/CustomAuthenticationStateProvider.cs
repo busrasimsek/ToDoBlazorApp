@@ -51,5 +51,11 @@ namespace ToDoBlazorApp.UserAuth
         {
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
+
+        public void NotifyUserLogout()
+        {
+            var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(anonymousUser)));
+        }
     }
 }

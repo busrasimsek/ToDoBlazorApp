@@ -1,7 +1,7 @@
 ﻿@layout LoginLayout
 @page "/login"
+@page "/"
 @using ToDoBlazorApp.UserAuth
-@inject IHttpClientFactory HttpClientFactory
 @inject TokenService TokenService
 @inject ISessionStorageService SessionStorage
 @inject AuthenticationStateProvider AuthStateProvider
@@ -41,7 +41,7 @@
             await AuthStateProvider.GetAuthenticationStateAsync();
             ((CustomAuthenticationStateProvider)AuthStateProvider).NotifyAuthenticationStateChanged();
             message = "Login successful.";
-            Navigation.NavigateTo("/");
+            Navigation.NavigateTo("/home");
         }
         else
         {

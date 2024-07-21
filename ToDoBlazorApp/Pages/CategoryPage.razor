@@ -1,0 +1,74 @@
+﻿@page "/categorypage"
+@using ToDoBlazorApp.Data;
+@using ToDoBlazorApp.Services.Abstract;
+@inject ICategoryService CategoryService
+
+
+<DxGrid @ref="Grid"
+        Data="categories"
+        PageSize="5"
+        EditMode="GridEditMode.EditForm"
+        EditModelSaving="Grid_EditModelSaving"
+        DataItemDeleting="Grid_DataItemDeleting">
+    <Columns>
+        <DxGridCommandColumn Width="160px" />
+        <DxGridDataColumn FieldName="CategoryName"  MinWidth="80" />
+        <DxGridDataColumn FieldName="Description"  MinWidth="80" />
+    </Columns>
+    <EditFormTemplate Context="EditFormContext">
+        @{
+            var category = (Category)EditFormContext.EditModel;
+        }
+        <DxFormLayout CssClass="w-100">
+            <DxFormLayoutItem Caption="Category Name:" ColSpanMd="6">
+                @EditFormContext.GetEditor("CategoryName")
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Description:" ColSpanMd="6">
+                @EditFormContext.GetEditor("Description")
+            </DxFormLayoutItem>
+
+        </DxFormLayout>
+    </EditFormTemplate>
+</DxGrid>
+
+
+@code {
+
+    List<Category> categories;
+    IGrid Grid { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await CategoryService.GetAllCategoriesAsync();
+    }
+
+    async Task Grid_EditModelSaving(GridEditModelSavingEventArgs e)
+    {
+
+        if (e.IsNew)
+            await CategoryService.AddCategoryAsync((Category)e.EditModel);
+        else
+            await CategoryService.UpdateCategoryAsync(((Category)e.DataItem).Id, (Category)e.EditModel);
+
+        categories = await CategoryService.GetAllCategoriesAsync();
+    }
+
+    async Task Grid_DataItemDeleting(GridDataItemDeletingEventArgs e)
+    {
+        bool result = await CategoryService.DeleteCategoryAsync(((Category)e.DataItem).Id);
+        categories = await CategoryService.GetAllCategoriesAsync();
+    }
+
+    private async Task DeleteCategory(int id)
+    {
+        bool result = await CategoryService.DeleteCategoryAsync(id);
+        await CategoryService.GetAllCategoriesAsync();
+    }
+
+}
+<style>
+    .dxbl-grid {
+        Width:50%;
+    }
+</style>
+

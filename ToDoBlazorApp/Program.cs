@@ -9,6 +9,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using ToDoBlazorApp.Context;
 using ToDoBlazorApp.Data;
+using ToDoBlazorApp.Services.Abstract;
+using ToDoBlazorApp.Services.Concrete;
 using ToDoBlazorApp.UserAuth;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,7 @@ builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<Loginservice>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 builder.Services.AddHttpClient("BaseUrl", client =>
