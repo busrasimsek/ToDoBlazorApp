@@ -1,0 +1,86 @@
+﻿@page "/productpage"
+@using ToDoBlazorApp.Data;
+@using ToDoBlazorApp.Models;
+@using Microsoft.EntityFrameworkCore
+@using ToDoBlazorApp.Services.Abstract;
+@inject IProductService ProductService
+@inject ICategoryService CategoryService
+@attribute [Authorize]
+
+<DxGrid @ref="Grid"
+        Data="products"
+        PageSize="5"
+        EditMode="GridEditMode.EditForm"
+        EditModelSaving="Grid_EditModelSaving"
+        DataItemDeleting="Grid_DataItemDeleting">
+    <Columns>
+        <DxGridCommandColumn Width="160px" />
+        <DxGridDataColumn FieldName="Name" MinWidth="80" />
+        <DxGridDataColumn FieldName="Price" MinWidth="80" />
+        <DxGridDataColumn FieldName="StockQuantity" MinWidth="80" />
+        <DxGridDataColumn FieldName="CategoryName" MinWidth="80" />
+        <DxGridDataColumn FieldName="Description" MinWidth="80" />
+    </Columns>
+    <EditFormTemplate Context="EditFormContext">
+        @{
+            var product = (ProductModel)EditFormContext.EditModel;
+        }
+        <DxFormLayout CssClass="w-100">
+            <DxFormLayoutItem Caption="Product Name:" ColSpanMd="6">
+                @EditFormContext.GetEditor("Name")
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Price:" ColSpanMd="6">
+                <DxSpinEdit @bind-Value="product.Price" Min="0" Max="10000" Increment="1" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Stock Quantity:" ColSpanMd="6">
+                <DxSpinEdit @bind-Value="product.StockQuantity" Min="0" Max="10000" Increment="1" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Category Name:" ColSpanMd="6">
+                <DxComboBox Data="@categories"
+                            NullText="Select Category..."
+                            @bind-Value="SelectedCategory"
+                            ValueFieldName="CategoryId"
+                            TextFieldName="@nameof(ProductModel.CategoryName)"
+                            DropDownWidthMode="DropDownWidthMode.ContentOrEditorWidth" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Description:" ColSpanMd="6">
+                @EditFormContext.GetEditor("Description")
+            </DxFormLayoutItem>
+        </DxFormLayout>
+    </EditFormTemplate>
+</DxGrid>
+
+@code {
+    private List<ProductModel> products;
+    private List<Category> categories;
+    Category SelectedCategory { get; set; }
+    private IGrid Grid { get; set; }
+    private DropDownWidthMode DropDownWidthMode { get; set; } = DropDownWidthMode.ContentOrEditorWidth;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await ProductService.GetAllProductsAsync();
+        categories = await CategoryService.GetAllCategoriesAsync();
+        SelectedCategory = categories.FirstOrDefault();
+    }
+
+    async Task Grid_EditModelSaving(GridEditModelSavingEventArgs e)
+    {
+        if (e.IsNew)
+        {
+           
+            await ProductService.AddProductAsync((ProductModel)e.EditModel);
+
+        }
+        else
+            await ProductService.UpdateProductAsync(((Product)e.DataItem).Id, (Product)e.EditModel);
+
+        products = await ProductService.GetAllProductsAsync();
+    }
+
+    async Task Grid_DataItemDeleting(GridDataItemDeletingEventArgs e)
+    {
+        bool result = await ProductService.DeleteProductAsync(((Product)e.DataItem).Id);
+        products = await ProductService.GetAllProductsAsync();
+    }
+}

@@ -8,6 +8,7 @@
 @inject HttpClient HttpClient
 @inject NavigationManager Navigation
 @inject Loginservice loginservice
+@attribute [AllowAnonymous]
 <h3>Login</h3>
 
 <EditForm Model="@loginRequest" OnValidSubmit="HandleLogin">
@@ -24,7 +25,26 @@
     </div>
     <button type="submit">Login</button>
 </EditForm>
+@* <EditForm Model="@loginRequest" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="validation-summary" />
 
+    <DxFormLayout>
+        <DxFormLayoutItem Caption="Username" ColSpanMd="6">
+            <InputText @bind-Value="loginRequest.Username" />
+            <ValidationMessage For="@(() => loginRequest.Username)" />
+        </DxFormLayoutItem>
+
+        <DxFormLayoutItem Caption="Password" ColSpanMd="6">
+            <InputText @bind-Value="loginRequest.Password" Type="password" />
+            <ValidationMessage For="@(() => loginRequest.Password)" />
+        </DxFormLayoutItem>
+
+        <DxFormLayoutItem ColSpanMd="6">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </DxFormLayoutItem>
+    </DxFormLayout>
+</EditForm> *@
 <p>@message</p>
 
 @code {
@@ -47,21 +67,6 @@
         {
             message = "Invalid username or password.";
         }
-        // var client = HttpClientFactory.CreateClient("BaseUrl");
-        // var response = await HttpClient.PostAsJsonAsync("https://localhost:7092/api/Login/Authenticate", loginRequest);
-
-        // if (response.IsSuccessStatusCode)
-        // {
-        //     var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
-        //     await TokenService.SaveTokenAsync(result.Token);
-        //     ((CustomAuthenticationStateProvider)AuthStateProvider).NotifyAuthenticationStateChanged();
-        //     message = "Login successful.";
-        //     Navigation.NavigateTo("/");
-        // }
-        // else
-        // {
-        //     message = "Invalid username or password.";
-        // }
     }
 
 

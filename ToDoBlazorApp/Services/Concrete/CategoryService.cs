@@ -62,7 +62,7 @@ namespace ToDoBlazorApp.Services.Concrete
                 var category = await _blazorAppDbContext.Categories.FindAsync(id);
                 if (category == null)
                 {
-                    return false; // Kategori bulunamadı
+                    return false;
                 }
 
                 _blazorAppDbContext.Categories.Remove(category);

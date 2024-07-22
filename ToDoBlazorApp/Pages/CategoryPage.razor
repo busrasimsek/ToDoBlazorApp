@@ -2,6 +2,7 @@
 @using ToDoBlazorApp.Data;
 @using ToDoBlazorApp.Services.Abstract;
 @inject ICategoryService CategoryService
+@attribute [Authorize]
 
 
 <DxGrid @ref="Grid"
@@ -59,11 +60,6 @@
         categories = await CategoryService.GetAllCategoriesAsync();
     }
 
-    private async Task DeleteCategory(int id)
-    {
-        bool result = await CategoryService.DeleteCategoryAsync(id);
-        await CategoryService.GetAllCategoriesAsync();
-    }
 
 }
 <style>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -20,9 +21,9 @@ namespace ToDoBlazorApp.UserAuth
 
             if (!string.IsNullOrEmpty(token))
             {
-                // Token'ı doğrulama ve claim'leri çıkarma işlemini burada yapın
                 identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
             }
+            
 
             var user = new ClaimsPrincipal(identity);
             return new AuthenticationState(user);

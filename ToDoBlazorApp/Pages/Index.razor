@@ -1,9 +1,31 @@
 ﻿@page "/home"
+@attribute [Authorize]
 
-<PageTitle>Index</PageTitle>
+<div class="custom-toast-background d-flex align-items-center">
+    <DxButton RenderStyle="ButtonRenderStyle.Secondary" Text="Hata Mesajı" Click="AddToast" />
+    <DxToastProvider Name="Positioning"
+                     MaxToastCount="3"
+                     HorizontalAlignment="HorizontalAlignment"
+                     VerticalAlignment="VerticalAlignment"
+                     Width="@Width"
+                     ShowCloseButton="true" />
+</div>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    [Inject] IToastNotificationService ToastService { get; set; }
+    static HorizontalAlignment[] HorizontalAlignmentSource { get; set; } = Enum.GetValues<HorizontalAlignment>();
+    static VerticalEdge[] VerticalAlignmentSource { get; set; } = Enum.GetValues<VerticalEdge>();
+    static string[] WidthSource { get; set; } = { "300px", "50%", "auto" };
+    HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Right;
+    VerticalEdge VerticalAlignment { get; set; } = VerticalEdge.Bottom;
+    string Width { get; set; } = WidthSource.First();
+    private void AddToast()
+    {
+        ToastService.ShowToast(new ToastOptions
+            {
+                ProviderName = "Positioning",
+                Title = "Mesaj Başlığı",
+                Text = "Bu bir test mesajıdır,..."
+            });
+    }
+}

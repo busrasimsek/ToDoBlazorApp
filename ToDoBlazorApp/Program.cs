@@ -1,14 +1,11 @@
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Net.Http.Headers;
 using System.Text;
 using ToDoBlazorApp.Context;
-using ToDoBlazorApp.Data;
 using ToDoBlazorApp.Services.Abstract;
 using ToDoBlazorApp.Services.Concrete;
 using ToDoBlazorApp.UserAuth;
@@ -20,15 +17,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddDevExpressBlazor();
 builder.Services.AddBlazoredSessionStorage();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<Loginservice>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddHttpClient("BaseUrl", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7092/"); // API'nin temel URL'si
+    client.BaseAddress = new Uri("https://localhost:7092/");
     client.DefaultRequestHeaders.Accept.Clear();
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
