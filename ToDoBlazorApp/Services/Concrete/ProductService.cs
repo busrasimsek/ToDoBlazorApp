@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ToDoBlazorApp.Context;
 using ToDoBlazorApp.Data;
 using ToDoBlazorApp.Models;
@@ -9,42 +10,24 @@ namespace ToDoBlazorApp.Services.Concrete
     public class ProductService : IProductService
     {
         private readonly BlazorAppDbContext _blazorAppDbContext;
-        public ProductService(BlazorAppDbContext blazorAppDbContext)
+        private readonly IMapper _mapper;
+        public ProductService(BlazorAppDbContext blazorAppDbContext, IMapper mapper)
         {
             _blazorAppDbContext = blazorAppDbContext;
+            _mapper = mapper;
         }
 
         public async Task<List<ProductModel>> GetAllProductsAsync()
         {
-            return await _blazorAppDbContext.Products.Include(p => p.Category).Select(x=> new ProductModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                Price = x.Price,
-                StockQuantity = x.StockQuantity,
-                CategoryId = x.CategoryId,
-                CategoryName = x.Category.CategoryName
-            }).ToListAsync();
+            var products = await _blazorAppDbContext.Products.Include(p => p.Category).ToListAsync();
+            return _mapper.Map<List<ProductModel>>(products);
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
-        {
-            return await _blazorAppDbContext.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
-
-        }
         public async Task<bool> AddProductAsync(ProductModel productModel)
         {
             try
             {
-                var product = new Product
-                {
-                    Name = productModel.Name,
-                    Description = productModel.Description,
-                    Price = productModel.Price,
-                    StockQuantity = productModel.StockQuantity,
-                    CategoryId = productModel.CategoryId
-                };
+                var product = _mapper.Map<Product>(productModel);
                 await _blazorAppDbContext.Products.AddAsync(product);
                 await _blazorAppDbContext.SaveChangesAsync();
                 return true;
@@ -64,13 +47,15 @@ namespace ToDoBlazorApp.Services.Concrete
                 {
                     return false;
                 }
-                existingProduct.Id = id;
-                existingProduct.Name = productModel.Name;
-                existingProduct.CategoryId = productModel.CategoryId;
-                existingProduct.Category.CategoryName = productModel.CategoryName;
-                existingProduct.Price = productModel.Price;
-                existingProduct.StockQuantity = productModel.StockQuantity;
-                existingProduct.Description = productModel.Description;
+
+                _mapper.Map(productModel, existingProduct);
+                //existingProduct.Id = id;
+                //existingProduct.Name = productModel.Name;
+                //existingProduct.CategoryId = productModel.CategoryId;
+                //existingProduct.Category.CategoryName = productModel.CategoryName;
+                //existingProduct.Price = productModel.Price ?? 0;
+                //existingProduct.StockQuantity = productModel.StockQuantity ?? 0;
+                //existingProduct.Description = productModel.Description;
 
                 _blazorAppDbContext.Products.Update(existingProduct);
                 await _blazorAppDbContext.SaveChangesAsync();

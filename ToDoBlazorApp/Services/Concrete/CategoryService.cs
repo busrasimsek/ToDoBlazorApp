@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ToDoBlazorApp.Context;
 using ToDoBlazorApp.Data;
+using ToDoBlazorApp.Models;
 using ToDoBlazorApp.Services.Abstract;
 
 namespace ToDoBlazorApp.Services.Concrete
@@ -8,20 +10,24 @@ namespace ToDoBlazorApp.Services.Concrete
     public class CategoryService : ICategoryService
     {
         private readonly BlazorAppDbContext _blazorAppDbContext;
-        public CategoryService(BlazorAppDbContext blazorAppDbContext)
+        private readonly IMapper _mapper;
+        public CategoryService(BlazorAppDbContext blazorAppDbContext, IMapper mapper)
         {
             _blazorAppDbContext = blazorAppDbContext;
+            _mapper = mapper;
         }
 
-        public async Task<List<Category>> GetAllCategoriesAsync()
+        public async Task<List<CategoryModel>> GetAllCategoriesAsync()
         {
-            return await _blazorAppDbContext.Categories.ToListAsync();
+            var category= await _blazorAppDbContext.Categories.ToListAsync();
+            return  _mapper.Map<List<CategoryModel>>(category);
         }
 
-        public async Task<bool> AddCategoryAsync(Category category)
+        public async Task<bool> AddCategoryAsync(CategoryModel categoryModel)
         {
             try
             {
+                var category= _mapper.Map<Category>(categoryModel);
                 await _blazorAppDbContext.Categories.AddAsync(category);
                 await _blazorAppDbContext.SaveChangesAsync();
                 return true;
@@ -32,7 +38,7 @@ namespace ToDoBlazorApp.Services.Concrete
             }
         }
 
-        public async Task<bool> UpdateCategoryAsync(int id, Category category)
+        public async Task<bool> UpdateCategoryAsync(int id, CategoryModel categoryModel)
         {
             try
             {
@@ -42,8 +48,7 @@ namespace ToDoBlazorApp.Services.Concrete
                     return false;
                 }
 
-                existingCategory.CategoryName = category.CategoryName;
-                existingCategory.Description = category.Description;
+                _mapper.Map(categoryModel, existingCategory);
 
                 _blazorAppDbContext.Categories.Update(existingCategory);
                 await _blazorAppDbContext.SaveChangesAsync();

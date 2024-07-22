@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using ToDoBlazorApp.Context;
 using ToDoBlazorApp.Services.Abstract;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<Loginservice>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddHttpClient("BaseUrl", client =>
 {

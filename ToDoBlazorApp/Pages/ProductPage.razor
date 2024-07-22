@@ -29,34 +29,39 @@
 
             <DxFormLayoutItem Caption="Product Name:" ColSpanMd="6">
                 @EditFormContext.GetEditor("Name")
+                <ValidationMessage For="@(() => product.Name)" />
             </DxFormLayoutItem>
             <DxFormLayoutItem Caption="Price:" ColSpanMd="6">
-                <DxSpinEdit @bind-Value="product.Price" Min="0" Max="10000" Increment="1" />
+                <DxSpinEdit @bind-Value="product.Price"/>
+                <ValidationMessage For="@(() => product.Price)" />
             </DxFormLayoutItem>
             <DxFormLayoutItem Caption="Stock Quantity:" ColSpanMd="6">
-                <DxSpinEdit @bind-Value="product.StockQuantity" Min="0" Max="10000" Increment="1" />
+                <DxSpinEdit @bind-Value="product.StockQuantity" />
+                <ValidationMessage For="@(() => product.StockQuantity)" />
             </DxFormLayoutItem>
             <DxFormLayoutItem Caption="Category Name:" ColSpanMd="6">
                 <DxComboBox Data="@categories"
+                            NullText="Select Category..."
                             @bind-Value="@product.CategoryId"
                             ValueFieldName="Id"
                             TextFieldName="@nameof(ProductModel.CategoryName)"
                             DropDownWidthMode="DropDownWidthMode.ContentOrEditorWidth" />
+                <ValidationMessage For="@(() => product.CategoryName)" />
             </DxFormLayoutItem>
             <DxFormLayoutItem Caption="Description:" ColSpanMd="6">
                 @EditFormContext.GetEditor("Description")
+                <ValidationMessage For="@(() => product.Description)" />
             </DxFormLayoutItem>
         </DxFormLayout>
     </EditFormTemplate>
 </DxGrid>
 
 @code {
-    private List<ProductModel> products;
-    private List<Category> categories;
-    Category SelectedCategory { get; set; }
-    private IGrid Grid { get; set; }
 
-    // private DropDownWidthMode DropDownWidthMode { get; set; } = DropDownWidthMode.ContentOrEditorWidth;
+    private List<ProductModel> products;
+    private List<CategoryModel> categories;
+    CategoryModel SelectedCategory { get; set; }
+    private IGrid Grid { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,8 +76,8 @@
 
         if (e.IsNew)
         {
-           
-            await ProductService.AddProductAsync((ProductModel)e.EditModel);
+
+            await ProductService.AddProductAsync(productModel);
 
         }
         else

@@ -1,5 +1,6 @@
 ﻿@page "/categorypage"
 @using ToDoBlazorApp.Data;
+@using ToDoBlazorApp.Models;
 @using ToDoBlazorApp.Services.Abstract;
 @inject ICategoryService CategoryService
 @attribute [Authorize]
@@ -18,14 +19,16 @@
     </Columns>
     <EditFormTemplate Context="EditFormContext">
         @{
-            var category = (Category)EditFormContext.EditModel;
+            var category = (CategoryModel)EditFormContext.EditModel;
         }
         <DxFormLayout CssClass="w-100">
             <DxFormLayoutItem Caption="Category Name:" ColSpanMd="6">
                 @EditFormContext.GetEditor("CategoryName")
+                <ValidationMessage For="@(() => category.CategoryName)" />
             </DxFormLayoutItem>
             <DxFormLayoutItem Caption="Description:" ColSpanMd="6">
                 @EditFormContext.GetEditor("Description")
+                <ValidationMessage For="@(() => category.Description)" />
             </DxFormLayoutItem>
 
         </DxFormLayout>
@@ -35,7 +38,7 @@
 
 @code {
 
-    List<Category> categories;
+    List<CategoryModel> categories;
     IGrid Grid { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -45,18 +48,19 @@
 
     async Task Grid_EditModelSaving(GridEditModelSavingEventArgs e)
     {
+        var categoryModel = (CategoryModel)e.EditModel;
 
         if (e.IsNew)
-            await CategoryService.AddCategoryAsync((Category)e.EditModel);
+            await CategoryService.AddCategoryAsync(categoryModel);
         else
-            await CategoryService.UpdateCategoryAsync(((Category)e.DataItem).Id, (Category)e.EditModel);
+            await CategoryService.UpdateCategoryAsync(((CategoryModel)e.DataItem).Id, categoryModel);
 
         categories = await CategoryService.GetAllCategoriesAsync();
     }
 
     async Task Grid_DataItemDeleting(GridDataItemDeletingEventArgs e)
     {
-        bool result = await CategoryService.DeleteCategoryAsync(((Category)e.DataItem).Id);
+        bool result = await CategoryService.DeleteCategoryAsync(((CategoryModel)e.DataItem).Id);
         categories = await CategoryService.GetAllCategoriesAsync();
     }
 
