@@ -7,6 +7,9 @@
 @inject ICategoryService CategoryService
 @attribute [Authorize]
 
+<div class="page-header">
+    <h3>PRODUCT PAGE</h3>
+</div>
 <DxGrid @ref="Grid"
         Data="products"
         PageSize="5"
@@ -32,7 +35,7 @@
                 <ValidationMessage For="@(() => product.Name)" />
             </DxFormLayoutItem>
             <DxFormLayoutItem Caption="Price:" ColSpanMd="6">
-                <DxSpinEdit @bind-Value="product.Price"/>
+                <DxSpinEdit @bind-Value="product.Price" />
                 <ValidationMessage For="@(() => product.Price)" />
             </DxFormLayoutItem>
             <DxFormLayoutItem Caption="Stock Quantity:" ColSpanMd="6">
@@ -92,3 +95,9 @@
         products = await ProductService.GetAllProductsAsync();
     }
 }
+<style>
+    .page-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>

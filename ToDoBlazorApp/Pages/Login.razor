@@ -9,43 +9,28 @@
 @inject NavigationManager Navigation
 @inject Loginservice loginservice
 @attribute [AllowAnonymous]
-<h3>Login</h3>
 
-<EditForm Model="@loginRequest" OnValidSubmit="HandleLogin">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<div class="login-form">
+    <EditForm Model="@loginRequest" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <div>
-        <label for="username">Username</label>
-        <InputText id="username" @bind-Value="loginRequest.Username" />
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <InputText id="password" @bind-Value="loginRequest.Password" type="password" />
-    </div>
-    <button type="submit">Login</button>
-</EditForm>
-@* <EditForm Model="@loginRequest" OnValidSubmit="HandleLogin">
-    <DataAnnotationsValidator />
-    <ValidationSummary class="validation-summary" />
+        <div>
+            <label for="username">Username</label>
+            <InputText id="username" @bind-Value="loginRequest.Username" />
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <InputText id="password" @bind-Value="loginRequest.Password" type="password" />
+        </div>
+        <button type="submit">Login</button>
+    </EditForm>
+    <p style="margin-top:10px;">@message</p>
 
-    <DxFormLayout>
-        <DxFormLayoutItem Caption="Username" ColSpanMd="6">
-            <InputText @bind-Value="loginRequest.Username" />
-            <ValidationMessage For="@(() => loginRequest.Username)" />
-        </DxFormLayoutItem>
+</div>
 
-        <DxFormLayoutItem Caption="Password" ColSpanMd="6">
-            <InputText @bind-Value="loginRequest.Password" Type="password" />
-            <ValidationMessage For="@(() => loginRequest.Password)" />
-        </DxFormLayoutItem>
 
-        <DxFormLayoutItem ColSpanMd="6">
-            <button type="submit" class="btn btn-primary">Login</button>
-        </DxFormLayoutItem>
-    </DxFormLayout>
-</EditForm> *@
-<p>@message</p>
+
 
 @code {
     private LoginRequest loginRequest = new LoginRequest();
@@ -68,6 +53,38 @@
             message = "Invalid username or password.";
         }
     }
-
-
 }
+<style>
+
+    #password {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    #username {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .login-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .login-container button:hover {
+            background-color: #45a049;
+    }
+
+</style>

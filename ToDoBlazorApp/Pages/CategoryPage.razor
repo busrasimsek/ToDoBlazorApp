@@ -6,6 +6,9 @@
 @attribute [Authorize]
 
 
+<div class="page-header">
+    <h3>CATEGORY PAGE</h3>
+</div>
 <DxGrid @ref="Grid"
         Data="categories"
         PageSize="5"
@@ -14,8 +17,8 @@
         DataItemDeleting="Grid_DataItemDeleting">
     <Columns>
         <DxGridCommandColumn Width="160px" />
-        <DxGridDataColumn FieldName="CategoryName"  MinWidth="80" />
-        <DxGridDataColumn FieldName="Description"  MinWidth="80" />
+        <DxGridDataColumn FieldName="CategoryName" MinWidth="80" />
+        <DxGridDataColumn FieldName="Description" MinWidth="80" />
     </Columns>
     <EditFormTemplate Context="EditFormContext">
         @{
@@ -67,8 +70,13 @@
 
 }
 <style>
-    .dxbl-grid {
-        Width:50%;
+  /*   .dxbl-grid {
+        Width: 50%;
+    } */
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 20px;
     }
 </style>
 

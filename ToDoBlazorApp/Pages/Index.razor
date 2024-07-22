@@ -17,7 +17,7 @@
     static VerticalEdge[] VerticalAlignmentSource { get; set; } = Enum.GetValues<VerticalEdge>();
     static string[] WidthSource { get; set; } = { "300px", "50%", "auto" };
     HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Right;
-    VerticalEdge VerticalAlignment { get; set; } = VerticalEdge.Bottom;
+    VerticalEdge VerticalAlignment { get; set; } = VerticalEdge.Top;
     string Width { get; set; } = WidthSource.First();
     private void AddToast()
     {
