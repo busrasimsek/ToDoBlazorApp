@@ -18,6 +18,7 @@ namespace ToDoBlazorApp.Services.Concrete
         {
             return await _blazorAppDbContext.Products.Include(p => p.Category).Select(x=> new ProductModel
             {
+                Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
                 Price = x.Price,
@@ -53,21 +54,23 @@ namespace ToDoBlazorApp.Services.Concrete
                 return false;
             }
         }
-        public async Task<bool> UpdateProductAsync(int id, Product product)
+        public async Task<bool> UpdateProductAsync(int id, ProductModel productModel)
         {
             try
             {
+              
                 var existingProduct = await _blazorAppDbContext.Products.FindAsync(id);
                 if (existingProduct == null)
                 {
                     return false;
                 }
-
-                existingProduct.Name = product.Name;
-                existingProduct.Category.CategoryName = product.Category.CategoryName;
-                existingProduct.Price = product.Price;
-                existingProduct.StockQuantity = product.StockQuantity;
-                existingProduct.Description = product.Description;
+                existingProduct.Id = id;
+                existingProduct.Name = productModel.Name;
+                existingProduct.CategoryId = productModel.CategoryId;
+                existingProduct.Category.CategoryName = productModel.CategoryName;
+                existingProduct.Price = productModel.Price;
+                existingProduct.StockQuantity = productModel.StockQuantity;
+                existingProduct.Description = productModel.Description;
 
                 _blazorAppDbContext.Products.Update(existingProduct);
                 await _blazorAppDbContext.SaveChangesAsync();

@@ -26,6 +26,7 @@
             var product = (ProductModel)EditFormContext.EditModel;
         }
         <DxFormLayout CssClass="w-100">
+
             <DxFormLayoutItem Caption="Product Name:" ColSpanMd="6">
                 @EditFormContext.GetEditor("Name")
             </DxFormLayoutItem>
@@ -37,9 +38,8 @@
             </DxFormLayoutItem>
             <DxFormLayoutItem Caption="Category Name:" ColSpanMd="6">
                 <DxComboBox Data="@categories"
-                            NullText="Select Category..."
-                            @bind-Value="SelectedCategory"
-                            ValueFieldName="CategoryId"
+                            @bind-Value="@product.CategoryId"
+                            ValueFieldName="Id"
                             TextFieldName="@nameof(ProductModel.CategoryName)"
                             DropDownWidthMode="DropDownWidthMode.ContentOrEditorWidth" />
             </DxFormLayoutItem>
@@ -55,7 +55,8 @@
     private List<Category> categories;
     Category SelectedCategory { get; set; }
     private IGrid Grid { get; set; }
-    private DropDownWidthMode DropDownWidthMode { get; set; } = DropDownWidthMode.ContentOrEditorWidth;
+
+    // private DropDownWidthMode DropDownWidthMode { get; set; } = DropDownWidthMode.ContentOrEditorWidth;
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,6 +67,8 @@
 
     async Task Grid_EditModelSaving(GridEditModelSavingEventArgs e)
     {
+        var productModel = (ProductModel)e.EditModel;
+
         if (e.IsNew)
         {
            
@@ -73,14 +76,14 @@
 
         }
         else
-            await ProductService.UpdateProductAsync(((Product)e.DataItem).Id, (Product)e.EditModel);
+            await ProductService.UpdateProductAsync(((ProductModel)e.DataItem).Id, productModel);
 
         products = await ProductService.GetAllProductsAsync();
     }
 
     async Task Grid_DataItemDeleting(GridDataItemDeletingEventArgs e)
     {
-        bool result = await ProductService.DeleteProductAsync(((Product)e.DataItem).Id);
+        bool result = await ProductService.DeleteProductAsync(((ProductModel)e.DataItem).Id);
         products = await ProductService.GetAllProductsAsync();
     }
 }
