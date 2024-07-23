@@ -25,7 +25,7 @@ namespace ToDoBlazorApp.Services.Concrete
 
         public async Task<bool> AddProductAsync(ProductModel productModel)
         {
-            try
+            try //normalde try catch yerine  ExceptionHandlingMiddleware  i yazılıp kullanılması daha iyidir
             {
                 var product = _mapper.Map<Product>(productModel);
                 await _blazorAppDbContext.Products.AddAsync(product);

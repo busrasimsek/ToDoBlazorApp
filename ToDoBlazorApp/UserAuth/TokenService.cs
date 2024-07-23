@@ -20,7 +20,6 @@ namespace ToDoBlazorApp.UserAuth
         {
             var token = await _sessionStorage.GetItemAsStringAsync("token");
             return token;
-            //await _sessionStorage.GetItemAsync<string>("token");
         }
 
         public async Task RemoveTokenAsync()

@@ -13,6 +13,8 @@ namespace ToDoBlazorApp.Models
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedUser { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public string? UpdatedUser { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
     }

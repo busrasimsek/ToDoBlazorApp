@@ -26,6 +26,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddHttpContextAccessor();
 
+
 builder.Services.AddHttpClient("BaseUrl", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7092/");
