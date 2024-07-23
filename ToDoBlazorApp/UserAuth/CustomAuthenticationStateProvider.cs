@@ -21,7 +21,7 @@ namespace ToDoBlazorApp.UserAuth
 
             if (!string.IsNullOrEmpty(token))
             {
-                identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
+                identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "Jwt");
             }
             
 

@@ -4,7 +4,6 @@
 @inject ISessionStorageService SessionStorageService
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
-
 <PageTitle>ToDoBlazorApp</PageTitle>
 
 <div class="page">
@@ -48,8 +47,8 @@
 
         NavigationManager.NavigateTo("/login");
     }
-    // private void Login()
-    // {
-    //     NavigationManager.NavigateTo("/login");
-    // }
+    private void Login()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
 }
