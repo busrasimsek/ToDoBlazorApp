@@ -3,6 +3,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ISessionStorageService SessionStorageService
 @inject NavigationManager NavigationManager
+@attribute [Authorize]
 
 <PageTitle>ToDoBlazorApp</PageTitle>
 
@@ -16,9 +17,9 @@
                 <Authorized>
                     <button @onclick="Logout" class="btn btn-danger">Logout</button>
                 </Authorized>
-                <NotAuthorized>
-                    <button @onclick="Login" class="btn btn-primary">Login</button>
-                </NotAuthorized>
+                @*   <NotAuthorized>
+                <button @onclick="Login" class="btn btn-primary">Login</button>
+                </NotAuthorized> *@
             </AuthorizeView>
         </div>
         <div class="card">
@@ -47,8 +48,8 @@
 
         NavigationManager.NavigateTo("/login");
     }
-    private void Login()
-    {
-        NavigationManager.NavigateTo("/login");
-    }
-            }
+    // private void Login()
+    // {
+    //     NavigationManager.NavigateTo("/login");
+    // }
+}

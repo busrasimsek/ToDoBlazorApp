@@ -23,6 +23,10 @@
         <DxGridDataColumn FieldName="StockQuantity" MinWidth="80" />
         <DxGridDataColumn FieldName="CategoryName" MinWidth="80" />
         <DxGridDataColumn FieldName="Description" MinWidth="80" />
+        <DxGridDataColumn FieldName="CreatedDate" MinWidth="80" />
+        <DxGridDataColumn FieldName="CreatedUser" MinWidth="80" />
+        <DxGridDataColumn FieldName="IsActive" MinWidth="80" />
+        <DxGridDataColumn FieldName="IsDeleted" MinWidth="80" />
     </Columns>
     <EditFormTemplate Context="EditFormContext">
         @{
@@ -55,10 +59,15 @@
                 @EditFormContext.GetEditor("Description")
                 <ValidationMessage For="@(() => product.Description)" />
             </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Is Active:" ColSpanMd="1">
+                <DxCheckBox @bind-Checked="product.IsActive" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Is Deleted:" ColSpanMd="1">
+                <DxCheckBox @bind-Checked="product.IsDeleted" />
+            </DxFormLayoutItem>
         </DxFormLayout>
     </EditFormTemplate>
 </DxGrid>
-
 @code {
 
     private List<ProductModel> products;

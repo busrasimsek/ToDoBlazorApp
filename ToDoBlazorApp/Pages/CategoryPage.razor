@@ -19,6 +19,11 @@
         <DxGridCommandColumn Width="160px" />
         <DxGridDataColumn FieldName="CategoryName" MinWidth="80" />
         <DxGridDataColumn FieldName="Description" MinWidth="80" />
+        <DxGridDataColumn FieldName="CreatedDate" MinWidth="80" />
+        <DxGridDataColumn FieldName="CreatedUser" MinWidth="80" />
+        <DxGridDataColumn FieldName="IsActive" MinWidth="80" />
+        <DxGridDataColumn FieldName="IsDeleted" MinWidth="80" />
+
     </Columns>
     <EditFormTemplate Context="EditFormContext">
         @{
@@ -33,7 +38,12 @@
                 @EditFormContext.GetEditor("Description")
                 <ValidationMessage For="@(() => category.Description)" />
             </DxFormLayoutItem>
-
+            <DxFormLayoutItem Caption="Is Active:" ColSpanMd="1">
+                <DxCheckBox @bind-Checked="category.IsActive" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Is Deleted:" ColSpanMd="1">
+                <DxCheckBox @bind-Checked="category.IsDeleted" />
+            </DxFormLayoutItem>
         </DxFormLayout>
     </EditFormTemplate>
 </DxGrid>

@@ -41,8 +41,6 @@
 @code {
     private string username = "Guest";
 
-    [CascadingParameter]
-    public Task<AuthenticationState> Authstate { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,7 +59,7 @@
             {
                 await SessionStorageService.RemoveItemAsync("token");
                 ((CustomAuthenticationStateProvider)AuthenticationStateProvider).NotifyUserLogout();
-                Navigation.NavigateTo("/login");
+                 Navigation.NavigateTo("/login");
 
             }
            

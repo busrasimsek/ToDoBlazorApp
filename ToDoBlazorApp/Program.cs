@@ -24,6 +24,7 @@ builder.Services.AddScoped<Loginservice>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddHttpClient("BaseUrl", client =>
 {

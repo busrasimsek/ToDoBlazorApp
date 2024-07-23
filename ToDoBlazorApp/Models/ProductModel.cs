@@ -23,5 +23,10 @@ namespace ToDoBlazorApp.Models
         public int CategoryId { get; set; }
 
         public string CategoryName { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+        public string CreatedUser { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
